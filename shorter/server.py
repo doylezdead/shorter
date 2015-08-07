@@ -4,6 +4,7 @@ import signal
 import sys
 
 import bottle
+import jinja
 
 import shorter.shorter_db as cdb
 
@@ -22,10 +23,16 @@ signal.signal(signal.SIGINT, interrupt_handler)
 
 dbuser = cdb.DBUser(port=25252)         # create a new dbuser instance to start handling the data package
 
+redirfile = os.path.join(os.path.realpath(__file__), 'redir.html')
+raw = ''
+with open(redirfile, mode='r') as f:
+    raw = '\n'.join(f.readlines())
+
+
 @bottle.route('/reg/<url:path>', method='GET')
 def reg(url):
     retkey = dbuser.register_url(url)
-    return retkey
+    return jinja.Template(raw).render(url=url, key=retkey)
 
 @bottle.route('/', method='GET')
 def landing():
@@ -34,7 +41,7 @@ def landing():
 @bottle.route('/<key:re:([a-z]|[A-Z]|[0-9]){6}>')
 def resolve(key):
     returl = dbuser.resolve_key(key)
-    return returl
+    return jinja.Template(raw).render(url=returl, key=key)
 
 
 print('Ctrl-C to gracefully shut down server')
