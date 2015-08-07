@@ -22,11 +22,14 @@ signal.signal(signal.SIGINT, interrupt_handler)
 
 dbuser = cdb.DBUser(port=25252)         # create a new dbuser instance to start handling the data package
 
-@bottle.route('/reg/<url>', method='GET')
+@bottle.route('/reg/<url:path>', method='GET')
 def reg(url):
     retkey = dbuser.register_url(url)
     return retkey
 
+@bottle.route('/', method='GET')
+def landing():
+    return 'usage.  shorten.com/reg/http://www.google.com\n        shorten.com/Ae4Fg8'
 
 @bottle.route('/<key:re:([a-z]|[A-Z]|[0-9]){6}>')
 def resolve(key):
@@ -35,4 +38,4 @@ def resolve(key):
 
 
 print('Ctrl-C to gracefully shut down server')
-bottle.run(host='0.0.0.0', port=5000)
+bottle.run(host='0.0.0.0', port=60606)

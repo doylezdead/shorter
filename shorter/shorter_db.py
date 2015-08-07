@@ -12,7 +12,7 @@ class DBUser:
         self.authenticated = False
 
     def register_url(self, url):
-        rand = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase + string.digits) for i in range(16))
+        rand = ''.join(random.choice(string.ascii_lowercase + string.ascii_uppercase + string.digits) for i in range(6))
 
         col = self.client['routes']['pairs']
 
