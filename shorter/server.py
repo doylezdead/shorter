@@ -16,11 +16,11 @@ def interrupt_handler(signal, frame):
 
 os.makedirs(os.path.expanduser('~/.shorter/db'), exist_ok=True)
 mongo_args = ['mongod', '--logpath', os.path.expanduser('~/.shorter/mongolog'), '--bind_ip',
-              '127.0.0.1', '--port', '252525', '--dbpath', os.path.expanduser('~/.shorter/db')]
+              '127.0.0.1', '--port', '25252', '--dbpath', os.path.expanduser('~/.shorter/db')]
 mongo_proc = sp.Popen(mongo_args)
 signal.signal(signal.SIGINT, interrupt_handler)
 
-dbuser = cdb.DBUser(port=252525)         # create a new dbuser instance to start handling the data package
+dbuser = cdb.DBUser(port=25252)         # create a new dbuser instance to start handling the data package
 
 @bottle.route('/reg/<url>', method='GET')
 def reg(url):
